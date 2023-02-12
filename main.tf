@@ -6,11 +6,18 @@ provider "aws" {
 }
 
 ## STATE SUR S3 BUCKET
-terraform{
+terraform {
   backend "s3" {
+    # Nom du bucket
     bucket = "adrien-isri-upjv"
-    key    = "terraform/vpc/terraform.tfstate"
+
+    # Chemin où on veut mettre le fichier dans le bucket
+    key = "terraform/vpc/terraform.tfstate"
+
+    # Region du bucket
     region = "us-east-1"
+
+    # Nom de la dynamo DB pour lock l'accès au fichier
     dynamodb_table = "lock-s3"
   }
 }
@@ -83,14 +90,14 @@ resource "aws_security_group" "secu_group" {
 ## Security group rules
 resource "aws_security_group_rule" "rule_ingress_nat" {
   # ingress = entrée
-  type              = "ingress"
+  type = "ingress"
 
   # Accepte le port 22 en entrée
-  from_port         = 22
-  to_port           = 22
+  from_port = 22
+  to_port   = 22
 
   # En TCP
-  protocol          = "tcp"
+  protocol = "tcp"
 
   # Depuis toutes les adresses
   cidr_blocks       = ["0.0.0.0/0"]
@@ -98,12 +105,12 @@ resource "aws_security_group_rule" "rule_ingress_nat" {
 }
 
 resource "aws_security_group_rule" "rule_ingress_private" {
-  type              = "ingress"
+  type = "ingress"
 
   # Accepte tous les ports et tous les protocoles en entrée
-  from_port         = -1
-  to_port           = -1
-  protocol          = -1
+  from_port = -1
+  to_port   = -1
+  protocol  = -1
 
   # Provenant du même réseau 
   cidr_blocks       = [var.cidr_block]
@@ -112,12 +119,12 @@ resource "aws_security_group_rule" "rule_ingress_private" {
 
 resource "aws_security_group_rule" "rule_egress_nat" {
   # egress = sortie
-  type              = "egress"
+  type = "egress"
 
   # Accepte tous les ports et protocoles en sortie
-  from_port         = -1
-  to_port           = -1
-  protocol          = -1
+  from_port = -1
+  to_port   = -1
+  protocol  = -1
 
   # Vers toutes les sorties
   cidr_blocks       = ["0.0.0.0/0"]
