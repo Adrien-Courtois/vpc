@@ -153,7 +153,7 @@ resource "aws_instance" "ec2_nat" {
   }
 }
 
-## EIP pour les nat (réservation d'une IP publique)
+## EIP pour les nat (réservation d'une IP publique constante)
 resource "aws_eip" "eip_nat" {
   for_each = var.azs
   vpc      = true
